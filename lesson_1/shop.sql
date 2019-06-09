@@ -6,10 +6,10 @@ CREATE TABLE catalogs (
 	UNIQUE unique_name(name(10))   -- индекс по первым 10 символам
 ) COMMENT = 'Разделы интернет-магазина';
 
--- INSERT INTO catalogs VALUSES (NULL, 'Процессоры');
--- INSERT INTO catalogs (name, id) VALUSES ('Мат. платы', NULL);
--- INSERT INTO catalogs VALUSES (DEFAULT, 'Видеокарты');
-INSERT INTO catalogs VALUSES
+-- INSERT INTO catalogs VALUES (NULL, 'Процессоры');
+-- INSERT INTO catalogs (name, id) VALUES ('Мат. платы', NULL);
+-- INSERT INTO catalogs VALUES (DEFAULT, 'Видеокарты');
+INSERT INTO catalogs VALUES
 	(DEFAULT, 'Процессоры'),
 	(DEFAULT, 'Мат. платы'),
 	(DEFAULT, 'Видеокарты');
