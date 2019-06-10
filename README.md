@@ -278,7 +278,7 @@ CREATE TABLE files (
 
 DROP TABLE IF EXISTS file_keywords;
 CREATE TABLE file_keywords (
-    id SERIAL PRIMARY KEY,
+    	id SERIAL PRIMARY KEY,
 	file_id INT UNSIGNED,
 	keyword_id INT UNSIGNED
 ) COMMENT = 'Связь файлов и ключеывых слов';
