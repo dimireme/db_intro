@@ -1,7 +1,3 @@
-/*
-Спроектируйте базу данных, которая позволяла бы организовать хранение медиа-файлов, загружаемых пользователем (фото, аудио, видео).
-Сами файлы будут храниться в файловой системе, а база данных будет хранить только пути к файлам, названия, описания, ключевых слов и принадлежности пользователю.*/
-
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
 	id SERIAL PRIMARY KEY,
@@ -25,6 +21,12 @@ CREATE TABLE files (
 	id SERIAL PRIMARY KEY,
 	name VARCHAR(255) COMMENT 'Название файла',
 	path_id INT UNSIGNED,
-	user_id INT UNSIGNED,
-	keyword_ids SET
+	user_id INT UNSIGNED
 ) COMMENT = 'Медиа файлы';
+
+DROP TABLE IF EXISTS file_keywords;
+CREATE TABLE file_keywords (
+    id SERIAL PRIMARY KEY,
+	file_id INT UNSIGNED,
+	keyword_id INT UNSIGNED
+) COMMENT = 'Связь файлов и ключеывых слов';
