@@ -1,5 +1,5 @@
 -- SERIAL == BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE
-DROP TABLE IF EXIST catalogs;
+DROP TABLE IF EXISTS catalogs;
 CREATE TABLE catalogs (
 	id SERIAL PRIMARY KEY,
 	name VARCHAR(255) COMMENT 'Название раздела',
@@ -12,13 +12,15 @@ CREATE TABLE catalogs (
 INSERT INTO catalogs VALUES
 	(DEFAULT, 'Процессоры'),
 	(DEFAULT, 'Мат. платы'),
-	(DEFAULT, 'Видеокарты');
+	(DEFAULT, 'Видеокарты'),
+	(DEFAULT, NULL),
+	(DEFAULT, NULL);
 
-UPDATE catalogs SET name = 'Процессоры (Intel)' WHERE name = 'Процессоры'
+UPDATE catalogs SET name = 'Процессоры (Intel)' WHERE name = 'Процессоры';
 SELECT id, name FROM catalogs;
 
 /*
-DROP TABLE IF EXIST cat;
+DROP TABLE IF EXISTS cat;
 CREATE TABLE cat (
 	id SERIAL PRIMARY KEY,
 	name VARCHAR(255) COMMENT 'Название раздела',
@@ -28,7 +30,7 @@ CREATE TABLE cat (
 INSERT INTO cat SELECT * FROM catalogs;
 */
 
-DROP TABLE IF EXIST users;
+DROP TABLE IF EXISTS users;
 CREATE TABLE users (
 	id SERIAL PRIMARY KEY,
 	name VARCHAR(255) COMMENT 'Имя покупателя',
@@ -40,7 +42,7 @@ CREATE TABLE users (
 -- INSERT INTO users (id, name, birthday_at) VALUSES (1, 'hello', 1979-01-27);
 -- SELECT * FROM users;
 
-DROP TABLE IF EXIST products;
+DROP TABLE IF EXISTS products;
 CREATE TABLE products (
 	id SERIAL PRIMARY KEY,
 	name VARCHAR(255) COMMENT 'Название',
@@ -56,7 +58,7 @@ CREATE TABLE products (
 -- CREATE INDEX index_of_catalog_id USING BTREE ON products (catalog_id);
 -- DROP INDEX index_of_catalog_id ON products;
 
-DROP TABLE IF EXIST orders;
+DROP TABLE IF EXISTS orders;
 CREATE TABLE orders (
 	id SERIAL PRIMARY KEY,
 	user_id INT UNSIGNED,
@@ -65,7 +67,7 @@ CREATE TABLE orders (
 	KEY index_of_user_id(user_id)
 ) COMMENT = 'Заказы';
 
-DROP TABLE IF EXIST orders_products;
+DROP TABLE IF EXISTS orders_products;
 CREATE TABLE orders_products (
 	id SERIAL PRIMARY KEY,
 	order_id INT UNSIGNED,
@@ -77,7 +79,7 @@ CREATE TABLE orders_products (
 	-- KEY product_id(product_id, order_id)
 ) COMMENT = 'Состав заказа';
 
-DROP TABLE IF EXIST discounts;
+DROP TABLE IF EXISTS discounts;
 CREATE TABLE discounts (
 	id SERIAL PRIMARY KEY,
 	user_id INT UNSIGNED,
@@ -91,7 +93,7 @@ CREATE TABLE discounts (
 	KEY index_of_product_id(product_id)
 ) COMMENT = 'Скидки';
 
-DROP TABLE IF EXIST storehouses;
+DROP TABLE IF EXISTS storehouses;
 CREATE TABLE storehouses (
 	id SERIAL PRIMARY KEY,
 	name VARCHAR(255) COMMENT 'Название',
@@ -100,7 +102,7 @@ CREATE TABLE storehouses (
 ) COMMENT = 'Склады';
 
 
-DROP TABLE IF EXIST storehouses_products;
+DROP TABLE IF EXISTS storehouses_products;
 CREATE TABLE storehouses_products (
 	id SERIAL PRIMARY KEY,
 	storehouse_id INT UNSIGNED,
