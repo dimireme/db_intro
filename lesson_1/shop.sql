@@ -69,7 +69,7 @@ DROP TABLE IF EXIST orders_products;
 CREATE TABLE orders_products (
 	id SERIAL PRIMARY KEY,
 	order_id INT UNSIGNED,
-	prodict_id INT UNSIGNED,
+	product_id INT UNSIGNED,
 	total INT UNSIGNED DEFAULT 1 COMMENT 'Количество заказанных товарных позиций',
 	created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
