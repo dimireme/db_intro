@@ -73,7 +73,12 @@ USE shop;
 SOURCE shop.sql
 UPDATE catalogs SET name = 'empty' WHERE name is NULL;
 ```
-Получим ошибку, так как поле name должно быть уникальным.
+Получим ошибку, так как поле name должно быть уникальным. Решение - убрать уникальный ключ, задать значение по-умолчанию и произвести замену существующих нулевых значений на значение по-умолчанию.
+```mysql
+ALTER TABLE catalogs ALTER name SET DEFAULT 'empty', DROP INDEX unique_name;
+UPDATE catalogs SET name = 'empty' WHERE name is NULL;
+```
+
 
 
 ###Задание
