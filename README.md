@@ -94,6 +94,7 @@ SOURCE media.sql
 
 <details><summary>Файл media.sql</summary>
 <p>
+
 ```mysql
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
@@ -128,6 +129,7 @@ CREATE TABLE file_keywords (
 	keyword_id INT UNSIGNED
 ) COMMENT = 'Связь файлов и ключеывых слов';
 ```
+
 </p>
 </details>
 
