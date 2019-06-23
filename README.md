@@ -88,3 +88,37 @@ EXIT;
 
 </p>
 </details>
+
+### Задание
+
+Из таблицы users необходимо извлечь пользователей, родившихся в августе и мае. Месяцы заданы в виде списка английских названий ('may', 'august').
+
+### Решение
+
+
+<details><summary>Файл help_keyword_dump.sql</summary>
+<p>
+
+```mysql
+
+```
+
+</p>
+</details>
+
+### Задание
+
+Из таблицы catalogs извлекаются записи при помощи запроса. SELECT * FROM catalogs WHERE id IN (5, 1, 2); Отсортируйте записи в порядке, заданном в списке IN.
+
+### Решение
+
+
+<details><summary>Файл help_keyword_dump.sql</summary>
+<p>
+
+```mysql
+
+```
+
+</p>
+</details>
