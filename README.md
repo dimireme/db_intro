@@ -108,11 +108,16 @@ INSERT INTO storehouses_products (value) VALUES
 
 ### Решение
 
-not finished
 ```mysql
-SELECT id, name, birthday_at FROM user WHERE birthday_at LIKE '%[may|august]%';
+SELECT 
+    id, name, birthday_at 
+FROM 
+    user 
+WHERE (
+    birthday_at LIKE '%may%' OR 
+    birthday_at LIKE '%august%'
+);
 ```
-
 
 ### Задание
 
