@@ -15,18 +15,15 @@ mysql
 ### Решение
 
 ```mysql
-
+UPDATE user SET 
+    created_at = IF(created_at is NULL, NOW(), created_at), 
+    updated_at = IF(updated_at is NULL, NOW(), updated_at);
 ```
-
-<details><summary>Файл example.sql</summary>
-<p>
-
+или
 ```mysql
-
+UPDATE user SET created_at = NOW() WHERE created_at = NULL;
+UPDATE user SET updated_at = NOW() WHERE updated_at = NULL;
 ```
-
-</p>
-</details>
 
 ### Задание
 
@@ -34,28 +31,38 @@ mysql
  
 ### Решение
 
-В среде mysql выполнить команды
+Создадим таблицу с ошибочными данными.
 
 ```mysql
-
+SOURCE user.sql;
 ```
 
-В папке проекта выполнить
-
-```text
-```
-
-В среде mysql
-
+Исправим записи и переопределим столбцы таблицы
 ```mysql
-
+UPDATE user SET created_at = STR_TO_DATE(created_at, '%d.%m.%Y %H:%i');
+UPDATE user SET updated_at = STR_TO_DATE(updated_at, '%d.%m.%Y %H:%i');
+    
+ALTER TABLE user MODIFY created_at DATETIME DEFAULT CURRENT_TIMESTAMP;
+ALTER TABLE user MODIFY updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ```
 
-<details><summary>Файл example_dump.sql</summary>
+<details><summary>Файл user.sql</summary>
 <p>
 
 ```mysql
+ DROP TABLE IF EXISTS user;
+ CREATE TABLE user (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) COMMENT 'Имя пользователя',
+    birthday_at VARCHAR(255),
+    created_at VARCHAR(255),
+    updated_at VARCHAR(255)
+ ) COMMENT = 'Пользователи';
 
+ INSERT INTO user (name, birthday_at, created_at, updated_at) VALUES
+    ('alex', '16 june 1988', '20.10.2017 8:10', '21.10.2017 8:10'),
+    ('max', '17 may 1989', '22.10.2017 8:10', '23.10.2017 8:10'),
+    ('kate', '18 august 1990', '24.10.2017 8:10', '25.10.2017 8:10');
 ```
 
 </p>
@@ -67,23 +74,29 @@ mysql
 
 ### Решение
 
-Выйти из среды mysql:
-
 ```mysql
-EXIT;
+SOURCE store.sql;
+
+SELECT * FROM storehouses_products ORDER BY CASE WHEN value = 0 THEN 1 ELSE 0 END, value;
 ```
 
-Создать дамп таблицы:
-
-```text
-
-```
-
-<details><summary>Файл help_keyword_dump.sql</summary>
+<details><summary>Файл store.sql</summary>
 <p>
 
 ```mysql
+DROP TABLE IF EXISTS storehouses_products;
+CREATE TABLE storehouses_products (
+    id SERIAL PRIMARY KEY,
+    value INT NOT NULL DEFAULT 0 COMMENT 'Доступное количество'
+) COMMENT 'Складские запасы';
 
+INSERT INTO storehouses_products (value) VALUES
+    (0),
+    (2500),
+    (0),
+    (30),
+    (500),
+    (1);
 ```
 
 </p>
@@ -95,16 +108,11 @@ EXIT;
 
 ### Решение
 
-
-<details><summary>Файл help_keyword_dump.sql</summary>
-<p>
-
+not finished
 ```mysql
-
+SELECT id, name, birthday_at FROM user WHERE birthday_at LIKE '%[may|august]%';
 ```
 
-</p>
-</details>
 
 ### Задание
 
