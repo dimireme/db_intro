@@ -121,16 +121,38 @@ WHERE (
 
 ### Задание
 
-Из таблицы catalogs извлекаются записи при помощи запроса. SELECT * FROM catalogs WHERE id IN (5, 1, 2); Отсортируйте записи в порядке, заданном в списке IN.
+Из таблицы catalogs извлекаются записи при помощи запроса `SELECT * FROM catalogs WHERE id IN (5, 1, 2);`. Отсортируйте записи в порядке, заданном в списке IN.
 
 ### Решение
 
+```mysql
+SOURCE catalogs.sql;
 
-<details><summary>Файл help_keyword_dump.sql</summary>
+SELECT * FROM catalogs WHERE id IN (5, 1, 2) ORDER BY FIND_IN_SET(id, '5,1,2');
+-- или
+SELECT * FROM catalogs WHERE id IN (5, 1, 2) ORDER BY FIELD(id, 5, 1, 2);
+```
+
+<details><summary>Файл catalogs.sql</summary>
 <p>
 
 ```mysql
+ DROP TABLE IF EXISTS catalogs;
+ CREATE TABLE catalogs (
+    id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY,
+    name VARCHAR(255) COMMENT 'Наименование товара',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+ ) COMMENT = 'Каталог ХХХ';
 
+ INSERT INTO catalogs (name) VALUES
+    ('alex_1'),
+    ('jessie_2'),
+    ('jasmine_3'),
+    ('oudrey_4'),
+    ('madison_5'),
+    ('oletta_6'),
+    ('nikole_7');
 ```
 
 </p>
