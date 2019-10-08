@@ -8,36 +8,19 @@ cd db_intro
 mysql
 ```
 
+```mysql
+USE example;
+```
+
 ### Задание
 
 Подсчитайте средний возраст пользователей в таблице users.
 
 ### Решение
 
-```mysql
-
-```
-
-### Задание
-
-Подсчитайте количество дней рождения, которые приходятся на каждый из дней недели. Следует учесть, что необходимы дни недели текущего года, а не года рождения.
-
-// TODO: доделать 
-### Решение
-
-Создадим таблицу с ошибочными данными.
-
+Для начала создадим таблицу с пользователями
 ```mysql
 SOURCE user.sql;
-```
-
-Исправим записи и переопределим столбцы таблицы
-```mysql
-UPDATE user SET created_at = STR_TO_DATE(created_at, '%d.%m.%Y %H:%i');
-UPDATE user SET updated_at = STR_TO_DATE(updated_at, '%d.%m.%Y %H:%i');
-    
-ALTER TABLE user MODIFY created_at DATETIME DEFAULT CURRENT_TIMESTAMP;
-ALTER TABLE user MODIFY updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ```
 
 <details><summary>Файл user.sql</summary>
@@ -48,19 +31,48 @@ ALTER TABLE user MODIFY updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE 
  CREATE TABLE user (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) COMMENT 'Имя пользователя',
-    birthday_at VARCHAR(255),
-    created_at VARCHAR(255),
-    updated_at VARCHAR(255)
+    birthday_at DATE
  ) COMMENT = 'Пользователи';
 
- INSERT INTO user (name, birthday_at, created_at, updated_at) VALUES
-    ('alex', '16 june 1988', '20.10.2017 8:10', '21.10.2017 8:10'),
-    ('max', '17 may 1989', '22.10.2017 8:10', '23.10.2017 8:10'),
-    ('kate', '18 august 1990', '24.10.2017 8:10', '25.10.2017 8:10');
+ INSERT INTO user (name, birthday_at) VALUES
+    ('oletta', '1990-10-05'),
+    ('jasmine', '1984-11-12'),
+    ('joni', '1985-05-20'),
+    ('jesse', '1988-02-14'),
+    ('madison', '1998-01-12'),
+    ('audrey', '2006-08-29');
 ```
 
-</p>
-</details>
+Итоговый запрос:
+```mysql
+SELECT SUM(TIMESTAMPDIFF(YEAR, birthday_at, NOW())) / COUNT(*) AS average_age FROM user;
+-- или
+SELECT ROUND(AVG(TIMESTAMPDIFF(YEAR, birthday_at, NOW())), 2) AS average_age FROM user;
+```
+
+### Задание
+
+Подсчитайте количество дней рождения, которые приходятся на каждый из дней недели. Следует учесть, что необходимы дни недели текущего года, а не года рождения.
+
+### Решение
+
+Воспользуемся ранее созданной таблицей `user`.
+
+```mysql
+SELECT 
+	COUNT(*) AS total, 
+	WEEKDAY(
+		CONCAT(
+			YEAR(NOW()),
+			SUBSTR(birthday_at, 5)
+		)
+	) AS week_day
+FROM 
+	user 	
+GROUP BY 
+	week_day;
+```
+
 
 ### Задание
 
@@ -69,28 +81,21 @@ ALTER TABLE user MODIFY updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE 
 ### Решение
 
 ```mysql
-SOURCE store.sql;
+SOURCE numbers.sql;
 
-SELECT * FROM storehouses_products ORDER BY CASE WHEN value = 0 THEN 1 ELSE 0 END, value;
+SELECT ROUND(EXP(SUM(LOG(value)))) as mul from numbers;
 ```
 
-<details><summary>Файл store.sql</summary>
+<details><summary>Файл numbers.sql</summary>
 <p>
 
 ```mysql
-DROP TABLE IF EXISTS storehouses_products;
-CREATE TABLE storehouses_products (
-    id SERIAL PRIMARY KEY,
-    value INT NOT NULL DEFAULT 0 COMMENT 'Доступное количество'
-) COMMENT 'Складские запасы';
+DROP TABLE IF EXISTS numbers;
+CREATE TABLE numbers (
+	value INT COMMENT 'Значение'
+) COMMENT = 'Числа для перемножения';
 
-INSERT INTO storehouses_products (value) VALUES
-    (0),
-    (2500),
-    (0),
-    (30),
-    (500),
-    (1);
+INSERT INTO numbers (value) VALUES (1), (2), (3), (4), (5);
 ```
 
 </p>
