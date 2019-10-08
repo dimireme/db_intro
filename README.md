@@ -43,6 +43,9 @@ SOURCE user.sql;
     ('audrey', '2006-08-29');
 ```
 
+</p>
+</details>
+
 Итоговый запрос:
 ```mysql
 SELECT SUM(TIMESTAMPDIFF(YEAR, birthday_at, NOW())) / COUNT(*) AS average_age FROM user;
