@@ -1,4 +1,4 @@
-# Lesson 4. Агрегация данных.
+# Lesson 5. Сложные запросы.
 
 Склонировать репозиторий и из папки репозитория запустить mysql сервер: 
 
@@ -14,11 +14,13 @@ USE example;
 
 ### Задание
 
-Подсчитайте средний возраст пользователей в таблице users.
+Составьте список пользователей users, которые осуществили хотя бы один заказ orders в интернет магазине.
 
 ### Решение
 
-Для начала создадим таблицу с пользователями
+// TODO: FIX THIS
+
+Создадим таблицу с пользователями
 ```mysql
 SOURCE user.sql;
 ```
@@ -55,7 +57,7 @@ SELECT ROUND(AVG(TIMESTAMPDIFF(YEAR, birthday_at, NOW())), 2) AS average_age FRO
 
 ### Задание
 
-Подсчитайте количество дней рождения, которые приходятся на каждый из дней недели. Следует учесть, что необходимы дни недели текущего года, а не года рождения.
+Выведите список товаров products и разделов catalogs, который соответствует товару.
 
 ### Решение
 
@@ -98,26 +100,54 @@ GROUP BY
 
 ### Задание
 
-Подсчитайте произведение чисел в столбце таблицы.
+Пусть имеется таблица рейсов flights (id, from, to) и таблица городов cities (label, name).
+Поля from, to и label содержат английские названия городов, поле name — русское. 
+Выведите список рейсов flights с русскими названиями городов.
 
 ### Решение
 
 ```mysql
-SOURCE numbers.sql;
+SOURCE timetable.sql;
 
-SELECT ROUND(EXP(SUM(LOG(value)))) as mul from numbers;
+SELECT
+	id,
+	(SELECT name FROM cities WHERE `label` = `from`) AS 'from',
+	(SELECT name FROM cities WHERE `label` = `to`) AS 'to' 
+FROM flights;
+
 ```
 
-<details><summary>Файл numbers.sql</summary>
+<details><summary>Файл timetable.sql</summary>
 <p>
 
 ```mysql
-DROP TABLE IF EXISTS numbers;
-CREATE TABLE numbers (
-	value INT COMMENT 'Значение'
-) COMMENT = 'Числа для перемножения';
+DROP TABLE IF EXISTS flights;
+CREATE TABLE flights (
+	id SERIAL PRIMARY KEY,
+	`from` VARCHAR(255),
+	`to` VARCHAR(255)
+) COMMENT = 'Список маршрутов';
 
-INSERT INTO numbers (value) VALUES (1), (2), (3), (4), (5);
+INSERT INTO flights (`from`, `to`) VALUES
+	('moscow', 'omsk'),
+	('novgorod', 'kazan'),
+	('irkutsk', 'moscow'),
+	('omsk', 'irkutsk'),
+	('moscow', 'kazan');
+
+
+DROP TABLE IF EXISTS cities;
+CREATE TABLE cities (
+	`label` VARCHAR(255),
+	name VARCHAR(255)
+) COMMENT = 'Лейблы городов';
+
+INSERT INTO cities (`label`, name) VALUES
+	('moscow', 'Москва'),
+	('irkutsk', 'Иркутск'),
+	('novgorod', 'Новгород'),
+	('kazan', 'Казань'),
+	('omsk', 'Омск');
 ```
 
 </p>
