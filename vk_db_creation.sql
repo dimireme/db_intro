@@ -707,3 +707,7 @@ INSERT INTO `profiles` VALUES ('1','f','1976-11-08','1','1970-01-18 03:54:01','A
 ('98','f','2005-09-07','98','1990-04-06 05:48:14','Lockmantown'),
 ('99','f','1996-10-09','99','1981-09-24 02:19:44','Lake Lora'),
 ('100','f','1990-02-11','100','1974-08-23 15:31:47','Port Mable');
+
+
+ALTER TABLE vk.likes ADD CONSTRAINT likes_fk FOREIGN KEY (id) REFERENCES vk.users(id);
+ALTER TABLE vk.likes ADD CONSTRAINT likes_fk_1 FOREIGN KEY (id) REFERENCES vk.media(id);
