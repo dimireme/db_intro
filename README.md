@@ -78,6 +78,8 @@ ALTER TABLE user MODIFY updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE 
 SOURCE store.sql;
 
 SELECT * FROM storehouses_products ORDER BY CASE WHEN value = 0 THEN 1 ELSE 0 END, value;
+-- или
+SELECT * FROM storehouses_products ORDER BY IF (value > 0, 0, 1), value;
 ```
 
 <details><summary>Файл store.sql</summary>
@@ -117,6 +119,13 @@ WHERE (
     birthday_at LIKE '%may%' OR 
     birthday_at LIKE '%august%'
 );
+-- или
+SELECT 
+	id, name, birthday_at
+FROM
+	user
+WHERE
+	DATE_FORMAT(birthday_at, '%M') IN ('may', 'august');
 ```
 
 ### Задание
@@ -130,7 +139,7 @@ SOURCE catalogs.sql;
 
 SELECT * FROM catalogs WHERE id IN (5, 1, 2) ORDER BY FIND_IN_SET(id, '5,1,2');
 -- или
-SELECT * FROM catalogs WHERE id IN (5, 1, 2) ORDER BY FIELD(id, 5, 1, 2);
+SELECT * FROM catalogs ORDER BY FIELD(id, 5, 1, 2);
 ```
 
 <details><summary>Файл catalogs.sql</summary>
