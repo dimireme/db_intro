@@ -103,3 +103,5 @@ CREATE TABLE likes(
     -- забыли внешние ключи: user_id, media_id
 );
 
+ALTER TABLE vk.likes ADD CONSTRAINT likes_fk FOREIGN KEY (id) REFERENCES vk.users(id);
+ALTER TABLE vk.likes ADD CONSTRAINT likes_fk_1 FOREIGN KEY (id) REFERENCES vk.media(id);
