@@ -74,6 +74,25 @@ FROM
 	user 	
 GROUP BY 
 	week_day;
+
+-- или
+
+SELECT 
+	COUNT(*) AS total,
+	DATE_FORMAT(
+		DATE(
+		    CONCAT_WS(
+		        '-', 
+		        YEAR(NOW()), 
+		        MONTH(birthday_at), 
+		        DAY(birthday_at)
+			)
+		),
+	    '%W'
+	)AS week_day 
+FROM user
+GROUP BY 
+	week_day;
 ```
 
 
