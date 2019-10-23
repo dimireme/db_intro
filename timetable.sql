@@ -1,3 +1,7 @@
+DROP DATABASE IF EXISTS example;
+CREATE DATABASE example;
+USE example;
+
 DROP TABLE IF EXISTS flights;
 CREATE TABLE flights (
 	id SERIAL PRIMARY KEY,
