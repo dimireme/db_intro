@@ -139,15 +139,15 @@ WHERE id IN (
 
 ### Задание
 
-Выведите список товаров products и разделов catalogs, который соответствует товару.
+Выведите список товаров `products` и разделов `catalogs`, который соответствует товару.
 
 ### Решение
 
 ```mysql
 SELECT p.id, p.name, c.name 
 FROM 
-    products AS p 
-    JOIN 
+	products AS p 
+	JOIN 
 	catalogs AS c
 	ON p.catalog_id = c.id
 ;
@@ -157,20 +157,16 @@ FROM
 SELECT 
 	id,
 	name,
-	(
-    	SELECT name 
-    	FROM catalogs 
-    	WHERE catalog_id = id
-    ) as 'catalog' 
+	(SELECT name FROM catalogs WHERE catalog_id = id) as 'catalog' 
 FROM products;
 ```
 
 
 ### Задание
 
-Пусть имеется таблица рейсов flights (id, from, to) и таблица городов cities (label, name).
-Поля from, to и label содержат английские названия городов, поле name — русское. 
-Выведите список рейсов flights с русскими названиями городов.
+Пусть имеется таблица рейсов `flights` (`id`, `from`, `to`) и таблица городов `cities` (`label`, `name`).
+Поля `from`, `to` и `label` содержат английские названия городов, поле `name` — русское. 
+Выведите список рейсов `flights` с русскими названиями городов.
 
 ### Решение
 
