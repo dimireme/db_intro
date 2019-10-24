@@ -1,11 +1,11 @@
 # Lesson 5. Сложные запросы.
 
-Склонировать репозиторий и из папки репозитория запустить mysql сервер: 
+Склонировать репозиторий и из папки репозитория запустить mysql-sql сервер: 
 
 ```text
 git clone https://github.com/dimireme/db_intro.git
 cd db_intro
-mysql
+mysql-sql
 ```
 
 ### Задание
@@ -15,14 +15,14 @@ mysql
 ### Решение
 
 Создадим базу данных `shop` с таблицами `catalogs`, `users`, `products`, `orders` и `orders_products`. Заполним таблицы тестовыми данными.
-```mysql
+```mysql-sql
 SOURCE shop.sql;
 ```
 
 <details><summary>Файл shop.sql</summary>
 <p>
 
-```mysql
+```mysql-sql
 DROP DATABASE IF EXISTS shop;
 CREATE DATABASE shop;
 USE shop;
@@ -128,7 +128,7 @@ VALUES
 </details>
 
 Запрос:
-```mysql
+```mysql-sql
 SELECT id, name
 FROM users 
 WHERE id IN (
@@ -136,6 +136,18 @@ WHERE id IN (
     FROM orders
 );
 ```
+То же самое с помощью JOIN-запроса:
+```mysql-sql
+SELECT DISTINCT
+    u.id, u.name 
+FROM 
+    users AS u 
+    JOIN
+    orders AS o 
+    ON u.id = o.user_id
+;
+```
+
 
 ### Задание
 
@@ -143,24 +155,25 @@ WHERE id IN (
 
 ### Решение
 
-```mysql
+```mysql-sql
 SELECT p.id, p.name, c.name 
 FROM 
 	products AS p 
-	JOIN 
+	LEFT JOIN 
 	catalogs AS c
 	ON p.catalog_id = c.id
 ;
 ```
 то же самое, с использованием вложенных запросов:
-```mysql
+```mysql-sql
 SELECT 
 	id,
 	name,
 	(SELECT name FROM catalogs WHERE catalog_id = id) as 'catalog' 
 FROM products;
 ```
-
+Вложенный подзапрос - коррелируемый и выполнится для каждой строки запроса. Поэтому предпочтительнее использовать JOIN-запрос. 
+Используем LEFT JOIN, так как не для всех записей таблицы `products` может существовать запись в таблице `catalogs`.
 
 ### Задание
 
@@ -171,14 +184,14 @@ FROM products;
 ### Решение
 
 Создадим таблицу `timetable`.
-```mysql
+```mysql-sql
 SOURCE timetable.sql;
 ```
 
 <details><summary>Файл timetable.sql</summary>
 <p>
 
-```mysql
+```mysql-sql
 DROP TABLE IF EXISTS flights;
 CREATE TABLE flights (
 	id SERIAL PRIMARY KEY,
@@ -211,12 +224,28 @@ INSERT INTO cities (`label`, name) VALUES
 </p>
 </details>
 
-
-```mysql
+```mysql-sql
+SELECT 
+    f.id,
+    cities_from.name AS `from`,
+    cities_to.name AS `to`
+ FROM
+    flights AS f
+    LEFT JOIN
+    cities AS cities_from
+    ON
+    f.from = cities_from.label
+    LEFT JOIN
+    cities AS cities_to
+    ON
+    f.to = cities_to.label
+;
+```
+То же самое с вложенными запросами:
+```mysql-sql
 SELECT
 	id,
 	(SELECT name FROM cities WHERE `label` = `from`) AS 'from',
 	(SELECT name FROM cities WHERE `label` = `to`) AS 'to' 
 FROM flights;
-
 ```
