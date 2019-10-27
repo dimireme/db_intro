@@ -133,6 +133,9 @@ VALUES
     ('MSI B250M GAMING PRO', 'Материнская плата MSI B250M GAMING PRO, B250, Socket 1151, DDR4, mATX', 5060.00, 2);
 ```
 
+</p>
+</details>
+
 Создадим представление `v1`:
 
 ```mysql
@@ -148,9 +151,6 @@ ON p.catalog_id = c.id;
 
 SELECT * FROM v1;
 ```
-
-</p>
-</details>
 
 ### Задание
 
