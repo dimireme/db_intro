@@ -101,14 +101,14 @@ VALUES
 
 DROP TABLE IF EXISTS orders_products;
 CREATE TABLE orders_products (
-  id SERIAL PRIMARY KEY,
-  order_id BIGINT UNSIGNED,
-  product_id BIGINT UNSIGNED,
-  total INT UNSIGNED DEFAULT 1 COMMENT 'Количество заказанных товарных позиций',
-  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY fk_order_id (order_id) REFERENCES orders (id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY fk_product_id (product_id) REFERENCES products (id) ON DELETE CASCADE ON UPDATE CASCADE
+    id SERIAL PRIMARY KEY,
+    order_id BIGINT UNSIGNED,
+    product_id BIGINT UNSIGNED,
+    total INT UNSIGNED DEFAULT 1 COMMENT 'Количество заказанных товарных позиций',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY fk_order_id (order_id) REFERENCES orders (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY fk_product_id (product_id) REFERENCES products (id) ON DELETE CASCADE ON UPDATE CASCADE
 ) COMMENT = 'Состав заказа';
 
 INSERT INTO orders_products
