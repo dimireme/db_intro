@@ -2,23 +2,105 @@
 
 ### Задание
 
-Создайте двух пользователей которые имеют доступ к базе данных shop. 
-Первому пользователю shop_read должны быть доступны только запросы на чтение данных,
-второму пользователю shop — любые операции в пределах базы данных shop.
+Создайте двух пользователей которые имеют доступ к базе данных `shop`. 
+Первому пользователю `shop_read` должны быть доступны только запросы на чтение данных,
+второму пользователю `shop` — любые операции в пределах базы данных `shop`.
 
 ### Решение
 
+```mysql
+GRANT SELECT ON shop.* TO 'shop_read'@'localhost' IDENTIFIED BY '12345678';
+GRANT ALL ON shop.* TO 'shop'@'localhost' IDENTIFIED BY '12345678'; 
+EXIT;
+```
 
+Проверим первого пользователя:
+
+```text
+mysql -u shop_read -p
+```
+
+Попробуем выполнить операции чтения и записи:
+
+```mysql
+USE shop;
+SELECT * FROM catalogs;
+INSERT INTO catalogs VALUES (NULL, 'Блоки питания');
+EXIT;
+```
+
+Первый запрос успешно выполняется, а второй возвращяет ошибку: 
+
+```text
+ERROR 1142 (42000): INSERT command denied to user 'shop_read'@'localhost' for table 'catalogs'
+```
+
+Проверим второго пользователя:
+
+```text
+mysql -u shop -p
+```
+
+Попробуем выполнить операции чтения и записи:
+
+```mysql
+USE shop;
+SELECT * FROM catalogs;
+INSERT INTO catalogs VALUES (NULL, 'Блоки питания');
+EXIT;
+```
+
+Оба запроса успешно выполнены.
 
 ### Задание
 
-Пусть имеется таблица accounts содержащая три столбца id, name, password, 
-содержащие первичный ключ, имя пользователя и его пароль. Создайте представление username
-таблицы accounts, предоставляющий доступ к столбца id и name. Создайте пользователя user_read, 
-который бы не имел доступа к таблице accounts, однако, мог бы извлекать записи из представления username.
+Пусть имеется таблица `accounts` содержащая три столбца `id`, `name`, `password`, 
+содержащие первичный ключ, имя пользователя и его пароль. Создайте представление `username`
+таблицы `accounts`, предоставляющий доступ к столбца `id` и `name`. Создайте пользователя `user_read`, который бы не имел доступа к таблице `accounts`, однако, мог бы извлекать записи из представления `username`.
 
 ### Решение
 
+```mysql
+DROP TABLE IF EXISTS accounts;
+CREATE TABLE user (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) COMMENT 'Имя пользователя',
+    password VARCHAR(255) COMMENT 'Пароль'
+) COMMENT = 'Пользователи';
+
+INSERT INTO accounts (name, password) VALUES
+    ('Oletta', '12345'),
+    ('Jasmine', '1234'),
+    ('Jesse', '123456');
+
+CREATE OR REPLACE VIEW  accounts_view AS SELECT id, name FROM accounts;
+
+GRANT ALL ON shop.accounts_view TO 'user_read'@'localhost' IDENTIFIED BY '12345678';
+EXIT;
+```
+
+Логинимся под новым пользователем:
+
+```text
+mysql -u user_read -p
+```
+
+Проверяем доступные таблицы:
+
+```mysql
+USE shop;
+SHOW TABLES;
+EXIT;
+```
+
+Запрс вернёт одну единственную таблицу `accounts_view`.
+
+После всех манипуляций, из-под учётки администратора удалим временных пользователей:
+
+```mysql
+SELECT host, user FROM mysql.user;
+DROP USER 'shop'@'localhost', 'shop_read'@'localhost', 'user_read'@'localhost'; 
+```
 
 
 ### Пример файла my.cnf и настройки репликации.
