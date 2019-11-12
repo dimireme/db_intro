@@ -7,11 +7,12 @@
 второму пользователю `shop` — любые операции в пределах базы данных `shop`.
 
 ### Решение
+Команда `GRANT` одновременно создаёт пользователя, если он не существует, и наделяет его правами.
 
 ```mysql
-GRANT SELECT ON shop.* TO 'shop_read'@'localhost' IDENTIFIED BY '12345678';
+GRANT SELECT, SHOW ON shop.* TO 'shop_read'@'localhost' IDENTIFIED BY '12345678';
 GRANT ALL ON shop.* TO 'shop'@'localhost' IDENTIFIED BY '12345678'; 
-EXIT;
+exit
 ```
 
 Проверим первого пользователя:
@@ -26,7 +27,7 @@ mysql -u shop_read -p
 USE shop;
 SELECT * FROM catalogs;
 INSERT INTO catalogs VALUES (NULL, 'Блоки питания');
-EXIT;
+exit
 ```
 
 Первый запрос успешно выполняется, а второй возвращяет ошибку: 
@@ -47,7 +48,7 @@ mysql -u shop -p
 USE shop;
 SELECT * FROM catalogs;
 INSERT INTO catalogs VALUES (NULL, 'Блоки питания');
-EXIT;
+exit
 ```
 
 Оба запроса успешно выполнены.
@@ -73,10 +74,10 @@ INSERT INTO accounts (name, password) VALUES
     ('Jasmine', '1234'),
     ('Jesse', '123456');
 
-CREATE OR REPLACE VIEW  accounts_view AS SELECT id, name FROM accounts;
+CREATE OR REPLACE VIEW username AS SELECT id, name FROM accounts;
 
-GRANT ALL ON shop.accounts_view TO 'user_read'@'localhost' IDENTIFIED BY '12345678';
-EXIT;
+GRANT SELECT ON shop.username TO 'user_read'@'localhost' IDENTIFIED BY '12345678';
+exit
 ```
 
 Логинимся под новым пользователем:
@@ -90,10 +91,10 @@ mysql -u user_read -p
 ```mysql
 USE shop;
 SHOW TABLES;
-EXIT;
+exit
 ```
 
-Запрс вернёт одну единственную таблицу `accounts_view`.
+Запрс вернёт одну единственную таблицу `username`.
 
 После всех манипуляций, из-под учётки администратора удалим временных пользователей:
 
