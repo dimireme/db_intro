@@ -1,6 +1,6 @@
-# Lesson 3. Операторы, фильтрация, сортировка и ограничение.
+# Урок 3. Операторы, фильтрация, сортировка и ограничение.
 
-Склонировать репозиторий и из папки репозитория запустить mysql сервер: 
+Склонировать репозиторий и из папки репозитория запустить mysql сервер:
 
 ```text
 git clone https://github.com/dimireme/db_intro.git
@@ -15,11 +15,13 @@ mysql
 ### Решение
 
 ```mysql
-UPDATE user SET 
-    created_at = IF(created_at is NULL, NOW(), created_at), 
+UPDATE user SET
+    created_at = IF(created_at is NULL, NOW(), created_at),
     updated_at = IF(updated_at is NULL, NOW(), updated_at);
 ```
+
 или
+
 ```mysql
 UPDATE user SET created_at = NOW() WHERE created_at = NULL;
 UPDATE user SET updated_at = NOW() WHERE updated_at = NULL;
@@ -28,7 +30,7 @@ UPDATE user SET updated_at = NOW() WHERE updated_at = NULL;
 ### Задание
 
 Таблица users была неудачно спроектирована. Записи created_at и updated_at были заданы типом VARCHAR и в них долгое время помещались значения в формате "20.10.2017 8:10". Необходимо преобразовать поля к типу DATETIME, сохранив введеные ранее значения.
- 
+
 ### Решение
 
 Создадим таблицу с ошибочными данными.
@@ -38,10 +40,11 @@ SOURCE user.sql;
 ```
 
 Исправим записи и переопределим столбцы таблицы
+
 ```mysql
 UPDATE user SET created_at = STR_TO_DATE(created_at, '%d.%m.%Y %H:%i');
 UPDATE user SET updated_at = STR_TO_DATE(updated_at, '%d.%m.%Y %H:%i');
-    
+
 ALTER TABLE user MODIFY created_at DATETIME DEFAULT CURRENT_TIMESTAMP;
 ALTER TABLE user MODIFY updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 ```
@@ -111,16 +114,16 @@ INSERT INTO storehouses_products (value) VALUES
 ### Решение
 
 ```mysql
-SELECT 
-    id, name, birthday_at 
-FROM 
-    user 
+SELECT
+    id, name, birthday_at
+FROM
+    user
 WHERE (
-    birthday_at LIKE '%may%' OR 
+    birthday_at LIKE '%may%' OR
     birthday_at LIKE '%august%'
 );
 -- или
-SELECT 
+SELECT
 	id, name, birthday_at
 FROM
 	user

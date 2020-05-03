@@ -1,6 +1,6 @@
-# Lesson 6. Транзакции, переменные, представления.
+# Урок 6. Транзакции, переменные, представления.
 
-Склонировать репозиторий и из папки репозитория запустить mysql сервер: 
+Склонировать репозиторий и из папки репозитория запустить mysql сервер:
 
 ```text
 git clone https://github.com/dimireme/db_intro.git
@@ -10,7 +10,7 @@ mysql
 
 ### Задание
 
-В базе данных shop и sample присутствуют одни и те же таблицы учебной базы данных. 
+В базе данных shop и sample присутствуют одни и те же таблицы учебной базы данных.
 Переместите запись id = 1 из таблицы shop.users в таблицу sample.users. Используйте транзакции.
 
 ### Решение
@@ -67,6 +67,7 @@ CREATE TABLE users (
 </details>
 
 Итоговые запросы:
+
 ```mysql
 START TRANSACTION;
 INSERT INTO sample.users (SELECT * FROM shop.users WHERE id = 1);
@@ -76,7 +77,7 @@ COMMIT;
 
 ### Задание
 
-Создайте представление, которое выводит название name товарной позиции 
+Создайте представление, которое выводит название name товарной позиции
 из таблицы products и соответствующее название каталога name из таблицы catalogs.
 
 ### Решение
@@ -139,14 +140,14 @@ VALUES
 Создадим представление `v1`:
 
 ```mysql
-CREATE OR REPLACE VIEW v1 AS 
-SELECT 
-    p.name as product, 
-    c.name as catalog 
-FROM 
-    products as p 
-LEFT JOIN 
-    catalogs as c 
+CREATE OR REPLACE VIEW v1 AS
+SELECT
+    p.name as product,
+    c.name as catalog
+FROM
+    products as p
+LEFT JOIN
+    catalogs as c
 ON p.catalog_id = c.id;
 
 SELECT * FROM v1;
@@ -154,9 +155,9 @@ SELECT * FROM v1;
 
 ### Задание
 
-Пусть имеется таблица с календарным полем created_at. 
-В ней размещены разряженые календарные записи за август 2018 года '2018-08-01', 
-'2016-08-04', '2018-08-16' и 2018-08-17. Составьте запрос, который выводит полный 
+Пусть имеется таблица с календарным полем created_at.
+В ней размещены разряженые календарные записи за август 2018 года '2018-08-01',
+'2016-08-04', '2018-08-16' и 2018-08-17. Составьте запрос, который выводит полный
 список дат за август, выставляя в соседнем поле значение 1, если дата присутствует
 в исходном таблице и 0, если она отсутствует.
 
@@ -188,13 +189,13 @@ CREATE TEMPORARY TABLE temp (date DATETIME);
 SET @N := -1;
 INSERT INTO temp SELECT DATE_ADD("2018-08-01", INTERVAL @N := @N + 1  DAY) FROM mysql.help_relation LIMIT 31;
 
-SELECT 
+SELECT
     date,
-    (SELECT 
+    (SELECT
         EXISTS(
-            SELECT created_at 
-            FROM calendar 
-            WHERE 
+            SELECT created_at
+            FROM calendar
+            WHERE
                 DAYOFMONTH(created_at) = DAYOFMONTH(date)
             AND
                 MONTH(created_at) = 8
@@ -208,28 +209,28 @@ FROM temp;
 ```mysql-sql
 CREATE TEMPORARY TABLE last_days (day INT);
 
-INSERT INTO last_days VALUES  
+INSERT INTO last_days VALUES
     (0), (1), (2), (3), (4), (5), (6), (7),
     (8), (9), (10), (11), (12), (13), (14), (15),
     (16), (17), (18), (19), (20), (21), (22), (23),
     (24), (25), (26), (27), (28), (29), (30);
 
-SELECT 
+SELECT
     DATE(DATE('2018-08-31') - INTERVAL l.day DAY) AS day,
-    NOT ISNULL(c.created_at) AS `match` 
+    NOT ISNULL(c.created_at) AS `match`
 FROM
     last_days AS l
-LEFT JOIN 
+LEFT JOIN
     calendar AS c
-ON 
+ON
     DATE(DATE('2018-08-31') - INTERVAL l.day DAY) = p.created_at
-ORDER BY 
+ORDER BY
     day;
 ```
 
 ### Задание
 
-Пусть имеется любая таблица с календарным полем created_at. 
+Пусть имеется любая таблица с календарным полем created_at.
 Создайте запрос, который удаляет устаревшие записи из таблицы, оставляя только 5 самых свежих записей.
 
 ### Решение
@@ -242,9 +243,9 @@ DROP TABLE IF EXISTS temp;
 CREATE TEMPORARY TABLE temp (created_at DATETIME);
 
 INSERT INTO temp (
-    SELECT * 
-    FROM calendar 
-    ORDER BY created_at DESC 
+    SELECT *
+    FROM calendar
+    ORDER BY created_at DESC
     LIMIT 5
 );
 
@@ -271,12 +272,12 @@ COMMIT;
 
 ```mysql-sql
 DELETE
-    calendar 
-FROM 
     calendar
-JOIN 
+FROM
+    calendar
+JOIN
     (
-        SELECT created_at 
+        SELECT created_at
         FROM calendar
         ORDER BY created_at DESC
         LIMIT 5, 1

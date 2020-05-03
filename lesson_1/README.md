@@ -1,8 +1,8 @@
-# Lesson 1. Язык запросов SQL.
+# Урок 1. Язык запросов SQL.
 
 ## Part 1
 
-Склонировать репозиторий и из папки репозитория запустить mysql сервер: 
+Склонировать репозиторий и из папки репозитория запустить mysql сервер:
 
 ```text
 git clone https://github.com/dimireme/db_intro.git
@@ -41,7 +41,7 @@ CREATE TABLE example.users (
 ### Задание
 
 Создайте дамп базы данных example из предыдущего задания, разверните содержимое дампа в новую базу данных sample.
- 
+
 ### Решение
 
 В среде mysql выполнить команды
@@ -64,7 +64,7 @@ mysql
 
 ```mysql
 SHOW TABLES FROM sample;
-DESCRIBE sample.users; 
+DESCRIBE sample.users;
 ```
 
 <details><summary>Файл example_dump.sql</summary>

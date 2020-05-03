@@ -1,4 +1,4 @@
-# Lesson 2. Язык запросов SQL.
+# Урок 2. Язык запросов SQL.
 
 ### Задание
 
@@ -127,12 +127,12 @@ REPLACE INTO sample.cat SELECT * FROM shop.catalogs;
 Альтернативное решение:
 
 ```mysql
-INSERT INTO 
+INSERT INTO
     sample.cat
-SELECT 
+SELECT
     id, name
-FROM 
-    shop.catalogs 
+FROM
+    shop.catalogs
 ON DUPLICATE KEY UPDATE
     name = VALUES(name);
 ```

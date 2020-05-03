@@ -1,6 +1,6 @@
-# Lesson 5. Сложные запросы.
+# Урок 5. Сложные запросы.
 
-Склонировать репозиторий и из папки репозитория запустить mysql-sql сервер: 
+Склонировать репозиторий и из папки репозитория запустить mysql-sql сервер:
 
 ```text
 git clone https://github.com/dimireme/db_intro.git
@@ -15,6 +15,7 @@ mysql-sql
 ### Решение
 
 Создадим базу данных `shop` с таблицами `catalogs`, `users`, `products`, `orders` и `orders_products`. Заполним таблицы тестовыми данными.
+
 ```mysql-sql
 SOURCE shop.sql;
 ```
@@ -128,26 +129,28 @@ VALUES
 </details>
 
 Запрос:
+
 ```mysql-sql
 SELECT id, name
-FROM users 
+FROM users
 WHERE id IN (
-    SELECT DISTINCT user_id 
+    SELECT DISTINCT user_id
     FROM orders
 );
 ```
+
 То же самое с помощью JOIN-запроса:
+
 ```mysql-sql
 SELECT DISTINCT
-    u.id, u.name 
-FROM 
-    users AS u 
+    u.id, u.name
+FROM
+    users AS u
     JOIN
-    orders AS o 
+    orders AS o
     ON u.id = o.user_id
 ;
 ```
-
 
 ### Задание
 
@@ -156,34 +159,38 @@ FROM
 ### Решение
 
 ```mysql-sql
-SELECT p.id, p.name, c.name 
-FROM 
-	products AS p 
-	LEFT JOIN 
+SELECT p.id, p.name, c.name
+FROM
+	products AS p
+	LEFT JOIN
 	catalogs AS c
 	ON p.catalog_id = c.id
 ;
 ```
+
 то же самое, с использованием вложенных запросов:
+
 ```mysql-sql
-SELECT 
+SELECT
 	id,
 	name,
-	(SELECT name FROM catalogs WHERE catalog_id = id) as 'catalog' 
+	(SELECT name FROM catalogs WHERE catalog_id = id) as 'catalog'
 FROM products;
 ```
-Вложенный подзапрос - коррелируемый и выполнится для каждой строки запроса. Поэтому предпочтительнее использовать JOIN-запрос. 
+
+Вложенный подзапрос - коррелируемый и выполнится для каждой строки запроса. Поэтому предпочтительнее использовать JOIN-запрос.
 Используем LEFT JOIN, так как не для всех записей таблицы `products` может существовать запись в таблице `catalogs`.
 
 ### Задание
 
 Пусть имеется таблица рейсов `flights` (`id`, `from`, `to`) и таблица городов `cities` (`label`, `name`).
-Поля `from`, `to` и `label` содержат английские названия городов, поле `name` — русское. 
+Поля `from`, `to` и `label` содержат английские названия городов, поле `name` — русское.
 Выведите список рейсов `flights` с русскими названиями городов.
 
 ### Решение
 
 Создадим таблицу `timetable`.
+
 ```mysql-sql
 SOURCE timetable.sql;
 ```
@@ -225,7 +232,7 @@ INSERT INTO cities (`label`, name) VALUES
 </details>
 
 ```mysql-sql
-SELECT 
+SELECT
     f.id,
     cities_from.name AS `from`,
     cities_to.name AS `to`
@@ -241,11 +248,13 @@ SELECT
     f.to = cities_to.label
 ;
 ```
+
 То же самое с вложенными запросами:
+
 ```mysql-sql
 SELECT
 	id,
 	(SELECT name FROM cities WHERE `label` = `from`) AS 'from',
-	(SELECT name FROM cities WHERE `label` = `to`) AS 'to' 
+	(SELECT name FROM cities WHERE `label` = `to`) AS 'to'
 FROM flights;
 ```

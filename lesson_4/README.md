@@ -1,6 +1,6 @@
-# Lesson 4. Агрегация данных.
+# Урок 4. Агрегация данных.
 
-Склонировать репозиторий и из папки репозитория запустить mysql сервер: 
+Склонировать репозиторий и из папки репозитория запустить mysql сервер:
 
 ```text
 git clone https://github.com/dimireme/db_intro.git
@@ -19,6 +19,7 @@ USE example;
 ### Решение
 
 Для начала создадим таблицу с пользователями
+
 ```mysql
 SOURCE user.sql;
 ```
@@ -47,6 +48,7 @@ SOURCE user.sql;
 </details>
 
 Итоговый запрос:
+
 ```mysql
 SELECT SUM(TIMESTAMPDIFF(YEAR, birthday_at, NOW())) / COUNT(*) AS average_age FROM user;
 -- или
@@ -62,39 +64,38 @@ SELECT ROUND(AVG(TIMESTAMPDIFF(YEAR, birthday_at, NOW())), 2) AS average_age FRO
 Воспользуемся ранее созданной таблицей `user`.
 
 ```mysql
-SELECT 
-	COUNT(*) AS total, 
+SELECT
+	COUNT(*) AS total,
 	WEEKDAY(
 		CONCAT(
 			YEAR(NOW()),
 			SUBSTR(birthday_at, 5)
 		)
 	) AS week_day
-FROM 
-	user 	
-GROUP BY 
+FROM
+	user
+GROUP BY
 	week_day;
 
 -- или
 
-SELECT 
+SELECT
 	COUNT(*) AS total,
 	DATE_FORMAT(
 		DATE(
 		    CONCAT_WS(
-		        '-', 
-		        YEAR(NOW()), 
-		        MONTH(birthday_at), 
+		        '-',
+		        YEAR(NOW()),
+		        MONTH(birthday_at),
 		        DAY(birthday_at)
 			)
 		),
 	    '%W'
-	)AS week_day 
+	)AS week_day
 FROM user
-GROUP BY 
+GROUP BY
 	week_day;
 ```
-
 
 ### Задание
 
