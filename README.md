@@ -2,16 +2,17 @@
 
 ### Задание
 
-Создайте двух пользователей которые имеют доступ к базе данных `shop`. 
+Создайте двух пользователей, которые имеют доступ к базе данных `shop`.
 Первому пользователю `shop_read` должны быть доступны только запросы на чтение данных,
 второму пользователю `shop` — любые операции в пределах базы данных `shop`.
 
 ### Решение
+
 Команда `GRANT` одновременно создаёт пользователя, если он не существует, и наделяет его правами.
 
 ```mysql
 GRANT SELECT, SHOW ON shop.* TO 'shop_read'@'localhost' IDENTIFIED BY '12345678';
-GRANT ALL ON shop.* TO 'shop'@'localhost' IDENTIFIED BY '12345678'; 
+GRANT ALL ON shop.* TO 'shop'@'localhost' IDENTIFIED BY '12345678';
 exit
 ```
 
@@ -30,7 +31,7 @@ INSERT INTO catalogs VALUES (NULL, 'Блоки питания');
 exit
 ```
 
-Первый запрос успешно выполняется, а второй возвращяет ошибку: 
+Первый запрос успешно выполняется, а второй возвращяет ошибку:
 
 ```text
 ERROR 1142 (42000): INSERT command denied to user 'shop_read'@'localhost' for table 'catalogs'
@@ -55,9 +56,7 @@ exit
 
 ### Задание
 
-Пусть имеется таблица `accounts` содержащая три столбца `id`, `name`, `password`, 
-содержащие первичный ключ, имя пользователя и его пароль. Создайте представление `username`
-таблицы `accounts`, предоставляющий доступ к столбца `id` и `name`. Создайте пользователя `user_read`, который бы не имел доступа к таблице `accounts`, однако, мог бы извлекать записи из представления `username`.
+Пусть имеется таблица `accounts` содержащая три столбца `id`, `name`, `password`, содержащие первичный ключ, имя пользователя и его пароль. Создайте представление `username` таблицы `accounts`, предоставляющее доступ к столбцам `id` и `name`. Создайте пользователя `user_read`, который бы не имел доступа к таблице `accounts`, однако, мог бы извлекать записи из представления `username`.
 
 ### Решение
 
@@ -70,8 +69,8 @@ CREATE TABLE user (
 ) COMMENT = 'Пользователи';
 
 INSERT INTO accounts (name, password) VALUES
-    ('Oletta', '12345'),
     ('Jasmine', '1234'),
+    ('Oletta', '12345'),
     ('Jesse', '123456');
 
 CREATE OR REPLACE VIEW username AS SELECT id, name FROM accounts;
@@ -100,9 +99,8 @@ exit
 
 ```mysql
 SELECT host, user FROM mysql.user;
-DROP USER 'shop'@'localhost', 'shop_read'@'localhost', 'user_read'@'localhost'; 
+DROP USER 'shop'@'localhost', 'shop_read'@'localhost', 'user_read'@'localhost';
 ```
-
 
 ### Пример файла my.cnf и настройки репликации.
 
@@ -141,6 +139,7 @@ sever-id = 1
 ```
 
 Пример настройки с применением репликаций и утилиты `mysqld_multi`:
+
 ```text
 [mysqld]
 bind-address = 127.0.0.1
@@ -172,9 +171,10 @@ relay-log = slave-relay-bin
 relay-log-index = slave-relay-bin.index
 ```
 
-В этом примере первый сервер - master, второй - slave. 
+В этом примере первый сервер - master, второй - slave.
 
 Чтобы всё заработало, подключаемся к master-серверу
+
 ```text
 mysql --socket=/tmp/mysql.sock1 -u root
 ```
