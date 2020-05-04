@@ -5,7 +5,7 @@
 Команда `GRANT` одновременно создаёт пользователя, если он не существует, и наделяет его правами.
 
 ```mysql
-GRANT SELECT, SHOW ON shop.* TO 'shop_read'@'localhost' IDENTIFIED BY '12345678';
+GRANT SELECT, SHOW VIEW ON shop.* TO 'shop_read'@'localhost' IDENTIFIED BY '12345678';
 GRANT ALL ON shop.* TO 'shop'@'localhost' IDENTIFIED BY '12345678';
 exit
 ```
@@ -83,7 +83,7 @@ SHOW TABLES;
 exit
 ```
 
-Запрс вернёт одну единственную таблицу `username`.
+Запрос вернёт одну единственную таблицу `username`.
 
 После всех манипуляций, из-под учётки администратора удалим временных пользователей:
 
