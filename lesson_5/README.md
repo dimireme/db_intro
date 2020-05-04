@@ -4,13 +4,13 @@
 
 Создадим базу данных `shop` с таблицами `catalogs`, `users`, `products`, `orders` и `orders_products`. Заполним таблицы тестовыми данными.
 
-```mysql-sql
+```mysql
 SOURCE shop.sql;
 ```
 
 <details><summary>Файл shop.sql</summary>
 
-```mysql-sql
+```mysql
 DROP DATABASE IF EXISTS shop;
 CREATE DATABASE shop;
 USE shop;
@@ -116,7 +116,7 @@ VALUES
 
 Итоговый запрос:
 
-```mysql-sql
+```mysql
 SELECT id, name
 FROM users
 WHERE id IN (
@@ -127,7 +127,7 @@ WHERE id IN (
 
 То же самое с помощью JOIN-запроса:
 
-```mysql-sql
+```mysql
 SELECT DISTINCT
 	u.id, u.name
 FROM users AS u
@@ -138,7 +138,7 @@ ON u.id = o.user_id
 
 **2. Выведите список товаров `products` и разделов `catalogs`, который соответствует товару.**
 
-```mysql-sql
+```mysql
 SELECT p.id, p.name, c.name
 FROM products AS p
 LEFT JOIN catalogs AS c
@@ -148,7 +148,7 @@ ON p.catalog_id = c.id
 
 то же самое, с использованием вложенных запросов:
 
-```mysql-sql
+```mysql
 SELECT
 	id,
 	name,
@@ -163,13 +163,13 @@ FROM products;
 
 Создадим таблицу `timetable`.
 
-```mysql-sql
+```mysql
 SOURCE timetable.sql;
 ```
 
 <details><summary>Файл timetable.sql</summary>
 
-```mysql-sql
+```mysql
 DROP DATABASE IF EXISTS example;
 CREATE DATABASE example CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -207,7 +207,7 @@ INSERT INTO cities (`label`, name) VALUES
 
 Запрос:
 
-```mysql-sql
+```mysql
 SELECT
 	f.id,
 	cities_from.name AS `from`,
@@ -222,7 +222,7 @@ ON f.to = cities_to.label
 
 То же самое с вложенными запросами:
 
-```mysql-sql
+```mysql
 SELECT
 	id,
 	(SELECT name FROM cities WHERE `label` = `from`) AS 'from',

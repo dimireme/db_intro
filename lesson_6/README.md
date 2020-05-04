@@ -174,7 +174,7 @@ FROM temp;
 
 Альтернативное решение:
 
-```mysql-sql
+```mysql
 CREATE TEMPORARY TABLE last_days (day INT);
 
 INSERT INTO last_days VALUES
@@ -219,7 +219,7 @@ DROP TABLE temp;
 
 Решение с использованием транзакции и динамического запроса:
 
-```mysql-sql
+```mysql
 START TRANSACTION;
 PREPARE postdel FROM 'DELETE FROM calendar ORDER BY created_at LIMIT ?;'
 SET @total = (SELECT COUNT(*) - 5 FROM calendar);
@@ -229,7 +229,7 @@ COMMIT;
 
 Решение в один запрос:
 
-```mysql-sql
+```mysql
 DELETE calendar
 FROM calendar
 JOIN (
