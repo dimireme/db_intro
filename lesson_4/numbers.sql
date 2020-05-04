@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS numbers;
+
 CREATE TABLE numbers (
 	value INT COMMENT 'Значение'
 ) COMMENT = 'Числа для перемножения';
