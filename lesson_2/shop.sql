@@ -19,17 +19,6 @@ INSERT INTO catalogs VALUES
 UPDATE catalogs SET name = 'Процессоры (Intel)' WHERE name = 'Процессоры';
 SELECT id, name FROM catalogs;
 
-/*
-DROP TABLE IF EXISTS cat;
-CREATE TABLE cat (
-	id SERIAL PRIMARY KEY,
-	name VARCHAR(255) COMMENT 'Название раздела',
-	UNIQUE unique_name(name(10))   -- индекс по первым 10 символам
-) COMMENT = 'Разделы интернет-магазина';
-
-INSERT INTO cat SELECT * FROM catalogs;
-*/
-
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
 	id SERIAL PRIMARY KEY,
@@ -86,7 +75,7 @@ CREATE TABLE discounts (
 	product_id INT UNSIGNED,
 	discount FLOAT UNSIGNED COMMENT 'Величина скидки от 0.0 до 1.0',
 	started_at DATETIME,
-	finished_at DATETIME,	
+	finished_at DATETIME,
 	created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	KEY index_of_user_id(user_id),
@@ -111,4 +100,3 @@ CREATE TABLE storehouses_products (
 	created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) COMMENT = 'Запасы на складе';
-
