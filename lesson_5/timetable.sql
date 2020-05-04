@@ -1,5 +1,6 @@
 DROP DATABASE IF EXISTS example;
 CREATE DATABASE example CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 USE example;
 
 DROP TABLE IF EXISTS flights;
@@ -15,7 +16,6 @@ INSERT INTO flights (`from`, `to`) VALUES
 	('irkutsk', 'moscow'),
 	('omsk', 'irkutsk'),
 	('moscow', 'kazan');
-
 
 DROP TABLE IF EXISTS cities;
 CREATE TABLE cities (

@@ -1,18 +1,6 @@
-# Урок 5. Сложные запросы.
+## Урок 5. Сложные запросы.
 
-Склонировать репозиторий и из папки репозитория запустить mysql-sql сервер:
-
-```text
-git clone https://github.com/dimireme/db_intro.git
-cd db_intro
-mysql-sql
-```
-
-### Задание
-
-Составьте список пользователей users, которые осуществили хотя бы один заказ orders в интернет магазине.
-
-### Решение
+**1. Составьте список пользователей users, которые осуществили хотя бы один заказ orders в интернет магазине.**
 
 Создадим базу данных `shop` с таблицами `catalogs`, `users`, `products`, `orders` и `orders_products`. Заполним таблицы тестовыми данными.
 
@@ -21,7 +9,6 @@ SOURCE shop.sql;
 ```
 
 <details><summary>Файл shop.sql</summary>
-<p>
 
 ```mysql-sql
 DROP DATABASE IF EXISTS shop;
@@ -102,14 +89,14 @@ VALUES
 
 DROP TABLE IF EXISTS orders_products;
 CREATE TABLE orders_products (
-    id SERIAL PRIMARY KEY,
-    order_id BIGINT UNSIGNED,
-    product_id BIGINT UNSIGNED,
-    total INT UNSIGNED DEFAULT 1 COMMENT 'Количество заказанных товарных позиций',
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY fk_order_id (order_id) REFERENCES orders (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY fk_product_id (product_id) REFERENCES products (id) ON DELETE CASCADE ON UPDATE CASCADE
+	id SERIAL PRIMARY KEY,
+	order_id BIGINT UNSIGNED,
+	product_id BIGINT UNSIGNED,
+	total INT UNSIGNED DEFAULT 1 COMMENT 'Количество заказанных товарных позиций',
+	created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	FOREIGN KEY fk_order_id (order_id) REFERENCES orders (id) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY fk_product_id (product_id) REFERENCES products (id) ON DELETE CASCADE ON UPDATE CASCADE
 ) COMMENT = 'Состав заказа';
 
 INSERT INTO orders_products
@@ -125,17 +112,16 @@ VALUES
 	(4, 2);
 ```
 
-</p>
 </details>
 
-Запрос:
+Итоговый запрос:
 
 ```mysql-sql
 SELECT id, name
 FROM users
 WHERE id IN (
-    SELECT DISTINCT user_id
-    FROM orders
+	SELECT DISTINCT user_id
+	FROM orders
 );
 ```
 
@@ -143,28 +129,20 @@ WHERE id IN (
 
 ```mysql-sql
 SELECT DISTINCT
-    u.id, u.name
-FROM
-    users AS u
-    JOIN
-    orders AS o
-    ON u.id = o.user_id
+	u.id, u.name
+FROM users AS u
+JOIN orders AS o
+ON u.id = o.user_id
 ;
 ```
 
-### Задание
-
-Выведите список товаров `products` и разделов `catalogs`, который соответствует товару.
-
-### Решение
+**2. Выведите список товаров `products` и разделов `catalogs`, который соответствует товару.**
 
 ```mysql-sql
 SELECT p.id, p.name, c.name
-FROM
-	products AS p
-	LEFT JOIN
-	catalogs AS c
-	ON p.catalog_id = c.id
+FROM products AS p
+LEFT JOIN catalogs AS c
+ON p.catalog_id = c.id
 ;
 ```
 
@@ -179,15 +157,9 @@ FROM products;
 ```
 
 Вложенный подзапрос - коррелируемый и выполнится для каждой строки запроса. Поэтому предпочтительнее использовать JOIN-запрос.
-Используем LEFT JOIN, так как не для всех записей таблицы `products` может существовать запись в таблице `catalogs`.
+В этом задании используем LEFT JOIN, так как не для всех записей таблицы `products` может существовать запись в таблице `catalogs`.
 
-### Задание
-
-Пусть имеется таблица рейсов `flights` (`id`, `from`, `to`) и таблица городов `cities` (`label`, `name`).
-Поля `from`, `to` и `label` содержат английские названия городов, поле `name` — русское.
-Выведите список рейсов `flights` с русскими названиями городов.
-
-### Решение
+**3. Пусть имеется таблица рейсов `flights` (`id`, `from`, `to`) и таблица городов `cities` (`label`, `name`). Поля `from`, `to` и `label` содержат английские названия городов, поле `name` — русское. Выведите список рейсов `flights` с русскими названиями городов.**
 
 Создадим таблицу `timetable`.
 
@@ -196,9 +168,13 @@ SOURCE timetable.sql;
 ```
 
 <details><summary>Файл timetable.sql</summary>
-<p>
 
 ```mysql-sql
+DROP DATABASE IF EXISTS example;
+CREATE DATABASE example CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+USE example;
+
 DROP TABLE IF EXISTS flights;
 CREATE TABLE flights (
 	id SERIAL PRIMARY KEY,
@@ -212,7 +188,6 @@ INSERT INTO flights (`from`, `to`) VALUES
 	('irkutsk', 'moscow'),
 	('omsk', 'irkutsk'),
 	('moscow', 'kazan');
-
 
 DROP TABLE IF EXISTS cities;
 CREATE TABLE cities (
@@ -228,24 +203,20 @@ INSERT INTO cities (`label`, name) VALUES
 	('omsk', 'Омск');
 ```
 
-</p>
 </details>
+
+Запрос:
 
 ```mysql-sql
 SELECT
-    f.id,
-    cities_from.name AS `from`,
-    cities_to.name AS `to`
- FROM
-    flights AS f
-    LEFT JOIN
-    cities AS cities_from
-    ON
-    f.from = cities_from.label
-    LEFT JOIN
-    cities AS cities_to
-    ON
-    f.to = cities_to.label
+	f.id,
+	cities_from.name AS `from`,
+	cities_to.name AS `to`
+FROM flights AS f
+LEFT JOIN cities AS cities_from
+ON f.from = cities_from.label
+LEFT JOIN cities AS cities_to
+ON f.to = cities_to.label
 ;
 ```
 
