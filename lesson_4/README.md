@@ -65,10 +65,10 @@ SELECT
 	DATE_FORMAT(
 		DATE(
 			CONCAT_WS(
-					'-',
-					YEAR(NOW()),
-					MONTH(birthday_at),
-					DAY(birthday_at)
+				'-',
+				YEAR(NOW()),
+				MONTH(birthday_at),
+				DAY(birthday_at)
 			)
 		),
 		'%W'
