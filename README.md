@@ -16,4 +16,6 @@ Homework at course "MySQL data base" at Geekbrains university.
 
 [Урок 7. Администрирование MySQL.](https://github.com/dimireme/gb_mysql_db_intro/tree/master/lesson_7)
 
+[Урок 8. Хранимые процедуры и функции. Триггеры.](https://github.com/dimireme/gb_mysql_db_intro/tree/master/lesson_8)
+
 [Вебинары.](https://github.com/dimireme/gb_mysql_db_intro/tree/master/vebinar)
