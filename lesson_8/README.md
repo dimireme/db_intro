@@ -25,7 +25,7 @@ SELECT hello();
 
 **2. В таблице products есть два текстовых поля: name с названием товара и description с его описанием. Допустимо присутствие обоих полей или одно из них. Ситуация, когда оба поля принимают неопределенное значение NULL неприемлема. Используя триггеры, добейтесь того, чтобы одно из этих полей или оба поля были заполнены. При попытке присвоить полям NULL-значение необходимо отменить операцию.**
 
-Сперва подготовим таблицу `products`
+Сперва подготовим таблицу `products`.
 
 ```mysql
 DROP TABLE IF EXISTS products;
@@ -37,7 +37,7 @@ CREATE TABLE products (
 ) COMMENT "продукты";
 ```
 
-Добавим триггер на вставку
+Добавим триггер на вставку.
 
 ```mysql
 DROP TRIGGER IF EXISTS check_null_product;
@@ -68,7 +68,7 @@ BEGIN
 END;
 ```
 
-Проверим вставку значений
+Проверим вставку значений.
 
 ```mysql
 INSERT INTO products (name, description) VALUES
@@ -85,19 +85,19 @@ SELECT * FROM products;
 | 2   |        | desc_2      |
 | 3   | prod_3 |             |
 
-Данные успешно вставились. Посмотрим что будет, если записать оба нулевых значения
+Данные успешно вставились. Посмотрим что будет, если записать оба нулевых значения.
 
 ```mysql
 INSERT INTO products (name, description) VALUES (NULL, NULL);
 ```
 
-Запрос выполнится с ошибкой
+Запрос выполнится с ошибкой.
 
 ```mysql
 ERROR 1644 (45000): INSERT canceled
 ```
 
-Проверим работу триггера на обновление
+Проверим работу триггера на обновление.
 
 ```mysql
 UPDATE products SET name = NULL WHERE id IN (1, 3);
@@ -118,3 +118,30 @@ SELECT * FROM products;
 | 0   | 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8   | 9   | 10  |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 0   | 1   | 1   | 2   | 3   | 5   | 8   | 13  | 21  | 34  | 55  |
+
+```mysql
+DROP FUNCTION IF EXISTS get_nth_fibonachi;
+CREATE FUNCTION get_nth_fibonachi (n INT)
+RETURNS INT
+BEGIN
+	DECLARE temp INT;
+	SET @curr = 1;
+	SET @prev = 1;
+	SET @i = 2;
+	IF n > 2 THEN
+		WHILE @i < n DO
+			SET temp = @curr;
+			SET @curr = @curr + @prev;
+			SET @prev = temp;
+			SET @i = @i + 1;
+		END WHILE;
+	END IF;
+	RETURN @curr;
+END;
+```
+
+```mysql
+SELECT get_nth_fibonachi(10); # 55
+SELECT get_nth_fibonachi(46); # 1 836 311 903
+SELECT get_nth_fibonachi(47); # ERROR 1264 (22003): Out of range value for column 'get_nth_fibonachi(47)' at row 1
+```
