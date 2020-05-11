@@ -6,18 +6,14 @@
 DROP FUNCTION IF EXISTS hello;
 
 CREATE FUNCTION hello ()
-RETURNS TEXT NOT DETERMINISTIC
+RETURNS text NOT DETERMINISTIC
 BEGIN
-	DECLARE message VARCHAR(255);
 	SET @current_hour = HOUR(CURRENT_TIME());
-
-	IF @current_hour <= 6 THEN SET message = "Доброй ночи";
-	ELSEIF @current_hour <= 12 THEN SET message = "Доброе утро";
-	ELSEIF @current_hour <= 18 THEN SET message = "Добрый день";
-	ELSE SET message = "Добрый вечер";
+	IF @current_hour <= 6 THEN RETURN "Доброй ночи";
+	ELSEIF @current_hour <= 12 THEN RETURN "Доброе утро";
+	ELSEIF @current_hour <= 18 THEN RETURN "Добрый день";
+	ELSE RETURN "Добрый вечер";
 	END IF;
-
-	RETURN message;
 END;
 
 SELECT hello();
