@@ -18,4 +18,6 @@ Homework at course "MySQL data base" at Geekbrains university.
 
 [Урок 8. Хранимые процедуры и функции. Триггеры.](https://github.com/dimireme/gb_mysql_db_intro/tree/master/lesson_8)
 
+[Урок 9. Оптимизация запросов.](https://github.com/dimireme/gb_mysql_db_intro/tree/master/lesson_9)
+
 [Вебинары.](https://github.com/dimireme/gb_mysql_db_intro/tree/master/vebinar)
