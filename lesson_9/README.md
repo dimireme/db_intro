@@ -170,7 +170,7 @@ SELECT COUNT(*) FROM test_large;
 ```mysql
 DROP TABLE IF EXISTS users_temp;
 
-CREATE table users_temp (name VARCHAR(255));
+CREATE TABLE users_temp (name VARCHAR(255));
 
 INSERT INTO users_temp (name) VALUES
 	('Audrey'),
