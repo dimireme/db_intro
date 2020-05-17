@@ -164,3 +164,55 @@ SELECT COUNT(*) FROM test_large;
 | 10000     |
 
 Очевидно, что запрос не оптимален.
+
+Создадим временную таблицу `users_temp` и поместим в неё 10 записей.
+
+```mysql
+DROP TABLE IF EXISTS users_temp;
+
+CREATE table users_temp (name VARCHAR(255));
+
+INSERT INTO users_temp (name) VALUES
+	('Audrey'),
+	('Jasmine'),
+	('Madison'),
+	('Tory'),
+	('Adreana'),
+	('Oletta'),
+	('Jesse'),
+	('Nicole'),
+	('Sasha'),
+	('Alexis')
+;
+```
+
+Создадим таблицу `users_large` с одним полем `name`. Вставим в неё записи из таблицы `users_temp`, сджойненые 6 раз. В итоге получим 1000000 записей в таблице `users_large`.
+
+```mysql
+CREATE TABLE users_large (name VARCHAR(255));
+
+INSERT INTO users_large (name) SELECT fst.name FROM
+	users_temp as fst,
+	users_temp as snd,
+	users_temp as thd,
+	users_temp as fth,
+	users_temp as fif,
+	users_temp as sth
+;
+```
+
+Проверим результат
+
+```mesql
+SELECT COUNT(*) FROM users_large;
+```
+
+| COUNT(\*) |
+| --------- |
+| 1000000   |
+
+Задача выполнена. В конце удалим временную таблицу `users_temp`.
+
+```mysql
+DROP TABLE IF EXISTS users_temp;
+```
