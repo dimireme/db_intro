@@ -125,3 +125,42 @@ SELECT * FROM logs;
 Триггеры работают как и задумывалось.
 
 **2. Создайте SQL-запрос, который помещает в таблицу users миллион записей.**
+
+Создадим тестовую таблицу `test_large` с одним полем `name`.
+
+```mysql
+DROP TABLE IF EXISTS test_large;
+CREATE TABLE test_large (name VARCHAR(255));
+```
+
+Создадим процедуру `set_large` которая добавляет в таблицу `test_large` значения вида `test_name_{i}`, где `i` - порядковый номер записи.
+
+```mysql
+DROP PROCEDURE IF EXISTS set_large;
+CREATE PROCEDURE set_large (num INT)
+BEGIN
+	SET @counter := 1;
+	WHILE (@counter<=num) DO
+		INSERT INTO test_large (name) VALUES (CONCAT('test_name_', @counter));
+		SET @counter := @counter + 1;
+	END WHILE;
+END;
+```
+
+Для начала выполним процедуру `set_large` с аргументом 10000.
+
+```mysql
+CALL set_large(10000);
+```
+
+Запрос выполнялся 55 секунд.
+
+```
+SELECT COUNT(*) FROM test_large;
+```
+
+| count(\*) |
+| --------- |
+| 10000     |
+
+Очевидно, что запрос не оптимален.
