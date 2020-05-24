@@ -70,7 +70,7 @@ OK
 "igor_mail@example.com"
 ```
 
-Аналогично нужно сделать для обратного поиска, так как в redis нет нормализации.
+Аналогично нужно сделать для обратного поиска, так как в `redis` нет нормализации.
 
 ```
 127.0.0.1:6379> HSET users 'igor_mail@example.com' 'igor'
@@ -131,8 +131,9 @@ WriteResult({ "nInserted" : 1 })
 
 ```javascript
 {
-  name: string,
+  _id: ObjectId,
   catalog_id: ObjectId,
+  name: string,
   price: number
 }
 ```
