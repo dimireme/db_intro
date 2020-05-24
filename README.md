@@ -20,4 +20,6 @@ Homework at course "MySQL data base" at Geekbrains university.
 
 [Урок 9. Оптимизация запросов.](https://github.com/dimireme/gb_mysql_db_intro/tree/master/lesson_9)
 
+[Урок 10. NoSQL.](https://github.com/dimireme/gb_mysql_db_intro/tree/master/lesson_10)
+
 [Вебинары.](https://github.com/dimireme/gb_mysql_db_intro/tree/master/vebinar)
